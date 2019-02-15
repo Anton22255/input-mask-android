@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
 import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,11 @@ public final class MainActivity extends Activity {
             AffinityCalculationStrategy.PREFIX,
             new MaskedTextChangedListener.ValueListener() {
                 @Override
+                public void onFocusChange(@Nullable View view, boolean hasFocus) {
+
+                }
+
+                @Override
                 public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue, @NonNull String formattedText) {
                     logValueListener(maskFilled, extractedValue, formattedText);
                     checkBox.setChecked(maskFilled);
@@ -64,6 +72,11 @@ public final class MainActivity extends Activity {
                 affineFormats,
                 AffinityCalculationStrategy.WHOLE_STRING,
                 new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onFocusChange(@Nullable View view, boolean hasFocus) {
+
+                    }
+
                     @Override
                     public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue, @NonNull String formattedText) {
                         logValueListener(maskFilled, extractedValue, formattedText);

@@ -30,6 +30,7 @@ open class MaskedTextChangedListener(
 ) : TextWatcher, View.OnFocusChangeListener {
 
     interface ValueListener {
+        fun onFocusChange(view: View?, hasFocus: Boolean)
         fun onTextChanged(maskFilled: Boolean, extractedValue: String, formattedValue: String)
     }
 
@@ -220,6 +221,7 @@ open class MaskedTextChangedListener(
             this.field.get()?.setSelection(result.formattedText.caretPosition)
             this.valueListener?.onTextChanged(result.complete, result.extractedValue, afterText)
         }
+        valueListener?.onFocusChange(view, hasFocus)
     }
 
     private fun pickMask(
