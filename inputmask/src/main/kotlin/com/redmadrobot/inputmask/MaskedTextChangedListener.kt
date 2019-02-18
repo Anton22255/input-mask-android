@@ -19,14 +19,14 @@ import java.util.*
  * Might be used as a decorator, which forwards TextWatcher calls to its own listener.
  */
 open class MaskedTextChangedListener(
-    var primaryFormat: String,
-    var affineFormats: List<String> = emptyList(),
-    var customNotations: List<Notation> = emptyList(),
-    var affinityCalculationStrategy: AffinityCalculationStrategy = AffinityCalculationStrategy.WHOLE_STRING,
-    var autocomplete: Boolean = true,
-    field: EditText,
-    var listener: TextWatcher? = null,
-    var valueListener: ValueListener? = null
+        var primaryFormat: String,
+        var affineFormats: List<String> = emptyList(),
+        var customNotations: List<Notation> = emptyList(),
+        var affinityCalculationStrategy: AffinityCalculationStrategy = AffinityCalculationStrategy.WHOLE_STRING,
+        var autocomplete: Boolean = true,
+        field: EditText,
+        var listener: TextWatcher? = null,
+        var valueListener: ValueListener? = null
 ) : TextWatcher, View.OnFocusChangeListener {
 
     interface ValueListener {
@@ -46,55 +46,55 @@ open class MaskedTextChangedListener(
      * Convenience constructor.
      */
     constructor(format: String, field: EditText) :
-        this(format, field, null)
+            this(format, field, null)
 
     /**
      * Convenience constructor.
      */
     constructor(format: String, field: EditText, valueListener: ValueListener?) :
-        this(format, field, null, valueListener)
+            this(format, field, null, valueListener)
 
     /**
      * Convenience constructor.
      */
     constructor(format: String, field: EditText, listener: TextWatcher?, valueListener: ValueListener?) :
-        this(format, true, field, listener, valueListener)
+            this(format, true, field, listener, valueListener)
 
     /**
      * Convenience constructor.
      */
     constructor(format: String, autocomplete: Boolean, field: EditText, listener: TextWatcher?, valueListener: ValueListener?) :
-        this(format, emptyList(), emptyList(), AffinityCalculationStrategy.WHOLE_STRING, autocomplete, field, listener, valueListener)
+            this(format, emptyList(), emptyList(), AffinityCalculationStrategy.WHOLE_STRING, autocomplete, field, listener, valueListener)
 
     /**
      * Convenience constructor.
      */
     constructor(primaryFormat: String, affineFormats: List<String>, field: EditText) :
-        this(primaryFormat, affineFormats, field, null)
+            this(primaryFormat, affineFormats, field, null)
 
     /**
      * Convenience constructor.
      */
     constructor(primaryFormat: String, affineFormats: List<String>, field: EditText, valueListener: ValueListener?) :
-        this(primaryFormat, affineFormats, field, null, valueListener)
+            this(primaryFormat, affineFormats, field, null, valueListener)
 
     /**
      * Convenience constructor.
      */
     constructor(primaryFormat: String, affineFormats: List<String>, field: EditText, listener: TextWatcher?, valueListener: ValueListener?) :
-        this(primaryFormat, affineFormats, true, field, listener, valueListener)
+            this(primaryFormat, affineFormats, true, field, listener, valueListener)
 
     /**
      * Convenience constructor.
      */
     constructor(primaryFormat: String, affineFormats: List<String>, autocomplete: Boolean, field: EditText, listener: TextWatcher?, valueListener: ValueListener?) :
-        this(primaryFormat, affineFormats, AffinityCalculationStrategy.WHOLE_STRING, autocomplete, field, listener, valueListener)
+            this(primaryFormat, affineFormats, AffinityCalculationStrategy.WHOLE_STRING, autocomplete, field, listener, valueListener)
 
     /**
      * Convenience constructor.
      */
     constructor(primaryFormat: String, affineFormats: List<String>, affinityCalculationStrategy: AffinityCalculationStrategy, autocomplete: Boolean, field: EditText, listener: TextWatcher?, valueListener: ValueListener?) :
-        this(primaryFormat, affineFormats, emptyList(), affinityCalculationStrategy, autocomplete, field, listener, valueListener)
+            this(primaryFormat, affineFormats, emptyList(), affinityCalculationStrategy, autocomplete, field, listener, valueListener)
 
     /**
      * Set text and apply formatting.
@@ -117,10 +117,10 @@ open class MaskedTextChangedListener(
      */
     open fun setText(text: String, field: EditText): Mask.Result {
         val result: Mask.Result =
-            this.pickMask(text, text.length, this.autocomplete).apply(
-                CaretString(text, text.length),
-                this.autocomplete
-            )
+                this.pickMask(text, text.length, this.autocomplete).apply(
+                        CaretString(text, text.length),
+                        this.autocomplete
+                )
         field.setText(result.formattedText.string)
         field.setSelection(result.formattedText.caretPosition)
         return result
@@ -174,6 +174,7 @@ open class MaskedTextChangedListener(
     override fun afterTextChanged(edit: Editable?) {
         this.field.get()?.removeTextChangedListener(this)
         edit?.replace(0, edit.length, this.afterText)
+        caretPosition = getLegalCaretPosition(caretPosition)
         this.field.get()?.setSelection(this.caretPosition)
         this.field.get()?.addTextChangedListener(this)
         this.listener?.afterTextChanged(edit)
