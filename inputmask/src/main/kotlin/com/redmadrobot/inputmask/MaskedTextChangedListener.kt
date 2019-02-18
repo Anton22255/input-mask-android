@@ -184,6 +184,7 @@ open class MaskedTextChangedListener(
         this.listener?.beforeTextChanged(p0, p1, p2, p3)
     }
 
+
     override fun onTextChanged(text: CharSequence, cursorPosition: Int, before: Int, count: Int) {
         val isDeletion: Boolean = before > 0 && count == 0
         val caretPosition = if (isDeletion) cursorPosition else cursorPosition + count
