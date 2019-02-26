@@ -1,7 +1,9 @@
 package com.redmadrobot.inputmask
 
 import android.text.Editable
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.text.method.DigitsKeyListener
 import android.view.View
 import android.widget.EditText
 import com.redmadrobot.inputmask.helper.AffinityCalculationStrategy
@@ -173,7 +175,18 @@ open class MaskedTextChangedListener(
 
     override fun afterTextChanged(edit: Editable?) {
         this.field.get()?.removeTextChangedListener(this)
-        edit?.replace(0, edit.length, this.afterText)
+
+        if (edit is SpannableStringBuilder) {
+            val filters = edit.filters
+            val choosenFilters = filters?.filter { it !is DigitsKeyListener }?.toTypedArray()
+            choosenFilters?.let {
+                edit.filters = it
+            }
+            edit.replace(0, edit.length, this.afterText)
+            filters?.let { edit.filters = filters }
+        } else {
+            edit?.replace(0, edit.length, this.afterText)
+        }
         caretPosition = getLegalCaretPosition(caretPosition)
         this.field.get()?.setSelection(this.caretPosition)
         this.field.get()?.addTextChangedListener(this)
